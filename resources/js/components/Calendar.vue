@@ -1,5 +1,18 @@
 <template>
     <div>
+        <v-snackbar
+            v-model="snackbar"
+            color="green"
+            :top = true
+        >
+        {{ snackbarText }}
+        <v-btn
+            snackbarText
+            @click="snackbar = false"
+        >
+            Close
+        </v-btn>
+        </v-snackbar>
         <v-row>
             <!-- FORM -->
             <v-form
@@ -111,6 +124,9 @@ export default {
             InteractionPlugin,
             ListPlugin
         ],
+
+        snackbar: false,
+        snackbarText: 'Successfuly added Event/s',
     }),
     created() {
         this.loadEvents();
@@ -161,6 +177,7 @@ export default {
             axios.post('/api/v1/events',payload).then(function(response) {
                 self.$store.commit('RESET_EVENT',{})
                 self.loadEvents();
+                self.snackbar = true;
             }).catch(function (error) {
 
             });
@@ -183,7 +200,7 @@ export default {
             text: "This is from the component",
             event: arg.event
         })
-        }
+    }
     },
     computed: {
       dateRangeText () {
