@@ -1,14 +1,14 @@
 <template>
     <div>
         <v-snackbar
-            v-model="snackbar"
-            color="green"
+            v-model="snackbar.visible"
+            :color="snackbar.color"
             :top = true
         >
-        {{ snackbarText }}
+        {{ snackbar.text }}
         <v-btn
-            snackbarText
-            @click="snackbar = false"
+            snackbar.text
+            @click="snackbar.visible = false"
         >
             Close
         </v-btn>
@@ -125,8 +125,11 @@ export default {
             ListPlugin
         ],
 
-        snackbar: false,
-        snackbarText: 'Successfuly added Event/s',
+        snackbar:{
+            visible:false,
+            color:'',
+            text:'',
+        },
     }),
     created() {
         this.loadEvents();
@@ -175,11 +178,17 @@ export default {
             };
 
             axios.post('/api/v1/events',payload).then(function(response) {
+                console.log(response);
                 self.$store.commit('RESET_EVENT',{})
                 self.loadEvents();
-                self.snackbar = true;
+                self.snackbar.visible = true;
+                self.snackbar.color = 'green';
+                self.snackbar.text = response.data.message;
             }).catch(function (error) {
-
+                console.log(error);
+                self.snackbar.visible = true;
+                self.snackbar.color = 'red';
+                self.snackbar.text = error.response.data.message;
             });
         }
 

@@ -72,6 +72,6 @@ class CalendarEventsController extends Controller
             $calendarEvent->save();
         }
 
-        return response()->json(["Success" => "Success"]);
+        return response()->json(["message" => "Sucessfuly added Event"]);
     }
 }
